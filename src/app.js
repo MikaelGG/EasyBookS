@@ -42,6 +42,6 @@ app.listen(app.get('port'), () => {
 
 app.use('/', loginRoutes);
 
-app.get('/', (req, res) => {
-    res.render('home');
-})
+// app.get('/home', (req, res) => {
+//     res.render('home');
+// })

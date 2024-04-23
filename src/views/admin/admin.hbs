@@ -1,0 +1,50 @@
+<div class="container"  style="font-family: 'Aclonica', sans-serif;">
+    <div>
+        <h1 class="text-center my-5 fs-4 ">Bienvenid@ <b>{{name}}</b></h1>
+        <div class="row justify-content-evenly text-white" style="text-shadow: 0 0 0 #000000, -1px -1px 0 #000, 1px -1px 0 #000, -1px  1px 0 #000, 1px  1px 0 #000;">
+
+            <a  class="d-flex flex-column justify-content-center align-items-center col-3" style="background-color: #B4846C; width: 130px; height: 40px; border-radius: 20px;" href="">Crear libro</a>
+    
+            <select id="genreSelect" class="form-select d-flex flex-column justify-content-center align-items-center text-white col-3" style="background-color: #B4846C; width: 190px; height: 40px; border-radius: 20px; text-shadow: 0 0 0 #000000, -1px -1px 0 #000, 1px -1px 0 #000, -1px  1px 0 #000, 1px  1px 0 #000;">
+                <option style="display: none;">Género</option>
+                <option value="narrativa">Narrativa</option>
+                <option value="poesía">Poesía</option>
+                <option value="drama">Drama</option>
+                <option value="ensayo">Ensayo</option>
+                <option value="bioAutoGrafia">Bio/Auto Grafía</option>
+                <option value="cienciaFicción">Ciencia Ficción</option>
+                <option value="terror">Terror</option>
+                <option value="misterio">Misterio</option>
+                <option value="romance">Romance</option>
+            </select>
+
+            <a class="d-flex flex-column justify-content-center align-items-center col-3" style="background-color: #B4846C; width: 220px; height: 40px; border-radius: 20px;" href="/admin/signUp">Crear administrador</a>
+
+        </div>
+    </div>
+    <div class="text-center my-5">
+        <p>Cantidad de libros comprados</p>
+        <p>7987</p>
+    </div>
+
+    <div id="narrativa" class="genero-data my-5" style="display: none;">
+        <p>fantasia asjdlkaslkñdhlñas</p>
+    </div>
+
+    <script>
+        const generoSelect = document.getElementById('genreSelect');
+        const generoDataDivs = document.querySelectorAll('.genero-data');
+
+        generoSelect.addEventListener('change', function() {
+            const selectedGenero = generoSelect.value;
+            generoDataDivs.forEach(div => {
+                if (div.id === selectedGenero) {
+                    div.style.display = 'block';
+                } else {
+                    div.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</div>
+

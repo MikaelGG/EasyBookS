@@ -8,30 +8,42 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://raw.githubusercontent.com/MikaelGG/EasyBookS/main/public/notebook_3258744.ico" type="image/x-icon">
+    <link rel="icon" href="https://raw.githubusercontent.com/MikaelGG/EasyBookS/main/public/book_4158471.ico" type="image/x-icon">
     <title>EasyBookS</title>
 </head>
-<body style="background-color: #fff;">
+<body style="background-color: #fff; display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
     <nav class="navbar navbar-expand-lg" style="background-color: #7D5A50; font-family: 'Aclonica', sans-serif; text-shadow: 0 0 0 #fff, -1px -1px 0 #000, 1px -1px 0 #000, -1px  1px 0 #000, 1px  1px 0 #000;">
         <div class="container-fluid">
-            <a class="navbar-brand col" href="#">
+            <a class="navbar-brand col" href="/home">
                 <img src="https://raw.githubusercontent.com/MikaelGG/EasyBookS/69c783a7739d88c24a63b772a3c6778839aaebc0/public/EasyBookS.svg" alt="Logo" style="width: auto; max-height: 70px; display: block; margin: 0 auto;" class="d-inline-block mx-5">
             </a>
-            <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNavAltMarkup">
-                <div class="navbar-nav" >
-                    <a class="nav-link active mx-4 text-white" href="/">Inicio</a>
-                    <a class="nav-link active mx-4 text-white" href="/logIn">Iniciar sesión</a>
-                    <a class="nav-link active mx-4 text-white br-3" aria-current="page"  href="/signUp">Registrarse</a>
+
+            {{#if name}}
+                <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNavAltMarkup">
+                    <div class="navbar-nav" >
+                        <p class="text-white mx-3 my-1">{{name}}</p>
+                        <a class="text-red-500 text-lg text-center mx-5" style="text-shadow: 0 0 0 #000000, -1px -1px 0 #000, 1px -1px 0 #000, -1px  1px 0 #000, 1px  1px 0 #000;"  href="/logOut">Salir</a>
+                    </div>
                 </div>
-            </div>
+            {{else}}
+                <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNavAltMarkup">
+                    <div class="navbar-nav" >
+                        <a class="nav-link active mx-4 text-white" href="/home">Inicio</a>
+                        <a class="nav-link active mx-4 text-white" href="/logIn">Iniciar sesión</a>
+                        <a class="nav-link active mx-4 text-white br-3" aria-current="page"  href="/signUp">Registrarse</a>
+                    </div>
+                </div>
+            {{/if}}
         </div>
     </nav>
 
-    {{{body}}}
+    <div style="flex-grow: 1;">
+        {{{body}}}
+    </div>
 
-     <footer class="text-white text-center py-3" style="background-color: #7D5A50; font-family: 'Aclonica', sans-serif; color: white; text-align: center; padding: 1rem; width:     100%; bottom: 0; position: absolute; display: flex; justify-content: space-between; align-items: center;">
+    <footer class="text-white text-center py-3" style="background-color: #7D5A50; font-family: 'Aclonica', sans-serif; color: white; text-align: center; padding: 1rem; width:     100%; bottom: 0; position: relative; display: flex; justify-content: space-between; align-items: center;">
         <img src="https://raw.githubusercontent.com/MikaelGG/EasyBookS/f9ed27cbb3faeab4a0b829c4abec1aaebb61ca59/public/SENA.svg" alt="SENA" style="width: auto; max-height: 40px;">
-        <span style="text-shadow: 0 0 0 #fff, -1px -1px 0 #000, 1px -1px 0 #000, -1px  1px 0 #000, 1px  1px 0 #000;">SENA Servicio Nacional de Aprendizaje</span>
+        <span  style="text-shadow: 0 0 0 #fff, -1px -1px 0 #000, 1px -1px 0 #000, -1px  1px 0 #000, 1px  1px 0 #000;">SENA Servicio Nacional de Aprendizaje</span>
         <img src="https://raw.githubusercontent.com/MikaelGG/EasyBookS/69c783a7739d88c24a63b772a3c6778839aaebc0/public/EasyBookS.svg" alt="Logo" style="width: auto; max-height: 40px;">
     </footer>
 
