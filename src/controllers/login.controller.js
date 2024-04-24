@@ -5,11 +5,27 @@ function home(req, res) {
 }
 
 function logIn(req, res ) {
-    res.render('login/index')
+    res.render('logIn')
 }
 
 function user(req, res){
-    res.render('user')
+    if (req.session.loggedin) {
+        req.getConnection((err, conn) => {
+            if (err) {
+                console.error('Error al conectar a la base de datos:', err);
+                return res.status(500).send("Error interno del servidor");
+            }
+            conn.query('SELECT * FROM books', (err, books) => {
+                if (err) {
+                    console.error('Error al obtener los libros:', err);
+                    return res.status(500).send("Error interno del servidor");
+                }
+                res.render('user/user', { name: req.session.name, books });
+            });
+        });
+    } else {
+        res.redirect('/logIn'); // Redireccionar si el usuario no está autenticado
+    }
 }
 
 function auth(req, res) {
@@ -25,9 +41,9 @@ function auth(req, res) {
                             req.session.loggedin = true;
                             req.session.name = element.name;
                             if (element.tipo === 'usuario'){
-                                res.render('user', { name: req.session.name })
+                                res.redirect('/user')
                             } else if (element.tipo === 'administrador'){
-                                res.render('admin/admin', { name: req.session.name})
+                                res.redirect('/admin')
                             }
                         }
                     })
@@ -66,10 +82,8 @@ function storeUser(req, res) {
                             req.session.loggedin = true;
                             req.session.name = data.name;
                             if (data.tipo === 'usuario'){
-                                res.render('user', { name: req.session.name })
-                            } else if (data.tipo === 'administrador'){
-                                res.render('admin/admin', { name: req.session.name})
-                            }
+                                res.render('user/user', { name: req.session.name });
+                            } 
                         });
                     });
                 });
@@ -85,7 +99,7 @@ function storeAdmin(req, res) {
             if(userdata.length > 0){
                 res.render('admin/signUp', { error: "¡ Error: El Email ya existe !", });
             }else {
-                bcrypt.hash(data.password, 12) .then(hash => {
+                bcrypt.hash(data.password, 12).then(hash => {
                     data.password = hash;
                     console.log(data);
                     
@@ -94,7 +108,7 @@ function storeAdmin(req, res) {
                             console.log('Consulta insertada')
                             if (data.tipo === 'administrador'){
                                 if (req.session.loggedin){
-                                    res.render('admin/admin', { name: req.session.name})
+                                    res.redirect('/admin')
                                 }
                             }
                         });
@@ -105,15 +119,70 @@ function storeAdmin(req, res) {
     })
 }
 
+function storeBook(req, res) {
+    const data = req.body;
+    req.getConnection((err, conn) => {
+        conn.query('INSERT INTO books SET ?', [data])
+        console.log('Consulta insertada')
+        if (req.session.loggedin) {
+            res.redirect('/admin')
+        }
+    })
+}
+
+// function showBooks(req, res) {
+//     req.getConnection((err, conn) => {
+//         if (req.session.loggedin) {
+//             conn.query('SELECT * FROM books', (err, books) => {
+//                 if (err){
+//                     console.log('Error al obtener los libros', err);
+//                     return res.status(500).send("Error interno del servidor");
+//                     console.log(books)
+//                 }
+//                 res.render('admin/admin', { books })
+//             })
+//         }
+//     })
+// }
+
+// function admin(req, res) {
+//     if (req.session.loggedin) {   
+//         res.render('admin/admin', { name: req.session.name})
+//     }
+// }
+
 function admin(req, res) {
-    res.render('admin/admin')
+    if (req.session.loggedin) {
+        req.getConnection((err, conn) => {
+            if (err) {
+                console.error('Error al conectar a la base de datos:', err);
+                return res.status(500).send("Error interno del servidor");
+            }
+            conn.query('SELECT * FROM books', (err, books) => {
+                if (err) {
+                    console.error('Error al obtener los libros:', err);
+                    return res.status(500).send("Error interno del servidor");
+                }
+                res.render('admin/admin', { name: req.session.name, books });
+            });
+        });
+    } else {
+        res.redirect('/logIn'); // Redireccionar si el usuario no está autenticado
+    }
+}
+
+
+function addBook(req, res) {
+    if (req.session.loggedin) {
+        res.render('admin/addBook', { name: req.session.name })
+    }
 }
 
 function logOut(req, res) {
     if (req.session.loggedin == true) {
         req.session.destroy()
     }
-    res.redirect('logIn')
+    res.redirect('/home')
 }
 
 module.exports = {
@@ -124,6 +193,8 @@ module.exports = {
     signUpAdmin,
     storeUser,
     storeAdmin,
+    storeBook,
+    addBook,
     auth,
     admin,
     logOut
